@@ -191,7 +191,7 @@ void Tree::mutateTree(GOftn** inTree, int depth) {
 			newNode->children[i] = (*inTree)->children[i];
 		}
 		int numNewChildren = newNode->numChildren - childrenToMove;
-		if (numNewChildren >= 0)
+		if (numNewChildren > 0)
 		{
 			for (int i = childrenToMove; i<(childrenToMove + numNewChildren); i++) {
 				newNode->children[i] = createRandomTree(depth + 1);
@@ -199,7 +199,7 @@ void Tree::mutateTree(GOftn** inTree, int depth) {
 		}
 		else //clear the memory the subtree of inTree
 		{
-			for (int i = childrenToMove; i<(childrenToMove + numNewChildren); i++) {
+			for (int i = childrenToMove; i<(*inTree)->numChildren; i++) {
 				deleteTree((*inTree)->children[i]);
 			}
 		}
@@ -252,19 +252,19 @@ void tourSel(Tree*tar, Tree*pop, Tree*ofsp)
 	selTree = pop[i];
 	for (int j = 1; j < TOU_SIZE; j++)
 	{
-		i = rand() % POP_SIZE;
-		if ((double)rand() / RAND_MAX < 0.5)
+		int ii = rand() % POPSIZE;
+		if ((double)rand() / RAND_MAX < 0.5 && ii != i)
 		{
-			if (pop[i].depth <= MAX_TREE_DEPTH && pop[i].perfScore < selTree.perfScore)
+			if (pop[ii].depth <= MAX_TREE_DEPTH && pop[ii].perfScore < selTree.perfScore)
 			{
-				selTree = pop[i];
+				selTree = pop[ii];
 			}
 		}
 		else
 		{
-			if (ofsp[i].depth <= MAX_TREE_DEPTH && ofsp[i].perfScore < selTree.perfScore)
+			if (ofsp[ii].depth <= MAX_TREE_DEPTH && ofsp[ii].perfScore < selTree.perfScore)
 			{
-				selTree = ofsp[i];
+				selTree = ofsp[ii];
 			}
 		}
 	}
